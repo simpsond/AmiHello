@@ -1,0 +1,27 @@
+#
+# SAS/C Amiga Makefile
+# Tested on version 6.58
+# To use, from the directory containing this file:
+#   makedir build
+#   smake
+#
+# Executable is AmiHello-sc in the build directory
+#
+
+TRG= build/AmiHello-sc
+CC=	sc ResOpt NoStackCheck NoChkAbort
+RM= delete
+
+CFLAGS= Opt OptSize OptInl OptInLocal PARMS=REGISTER ObjectName=build/
+LDLAGS=	Link NoStdIO NoStartUp Batch
+
+all: $(TRG)
+
+build/hello.o: src/hello.c
+   $(CC) $(CFLAGS) $<
+
+$(TRG):	build/hello.o
+    $(CC) $(LDLAGS) TO=$@ build/hello.o
+
+clean:
+    -$(RM) build/\#?
